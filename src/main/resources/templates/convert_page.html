@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Currency Exchange</title>
+</head>
+<body>
+    <div class="container">
+        <h3>Конвертер</h3>
+        <form th:action="@{/convert}" th:object="${history}" method="POST">
+            <select th:name="firstVal" th:field="*{sourceCurrency}">
+                <option th:each="valuteFirst : ${valutes}" th:text="${valuteFirst.charCode} + ' (' + ${valuteFirst.name} + ')'" th:value="${valuteFirst.id}"/>
+            </select>
+            <select th:name="secondVal" th:field="*{targetCurrency}">
+                <option th:each="valuteSecond : ${valutes}" th:text="${valuteSecond.charCode} + ' (' + ${valuteSecond.name} + ')'" th:value="${valuteSecond.id}"/>
+            </select>
+            <input th:field="*{sourceSumm}" type="number" placeholder="">
+            <input th:field="*{resultSumm}" type="number" placeholder="">
+            <button type="submit" class="btn btn-primary btn-block">Конвертировать</button>
+        </form>
+        <form th:action="@{/history}" method="get">
+            <button type="submit" class="btn btn-primary btn-block">История</button>
+        </form>
+    </div>
+</body>
+</html>

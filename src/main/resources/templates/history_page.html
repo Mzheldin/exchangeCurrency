@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>История</title>
+</head>
+<body>
+    <div class="container">
+        <h3>История</h3>
+        <form th:action="@{/history}" method="GET">
+            <input th:name="date" type="date" placeholder="">
+            <select th:name="sourceValute">
+                <option th:each="sourceValute : ${valutes}" th:text="${sourceValute.charCode} + ' (' + ${sourceValute.name} + ')'" th:value="${sourceValute.id}"/>
+            </select>
+            <select th:name="targetValute">
+                <option th:each="targetValute : ${valutes}" th:text="${targetValute.charCode} + ' (' + ${targetValute.name} + ')'" th:value="${targetValute.id}"/>
+            </select>
+            </select>
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Исходная валюта</th>
+                    <th>Целевая валюта</th>
+                    <th>Исходная сумма</th>
+                    <th>Получаемая сумма</th>
+                    <th>Дата</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="history : ${histories}">
+                    <td th:text="${valuteService.findById(history.sourceCurrency).charCode + ' (' + valuteService.findById(history.sourceCurrency).name} + ')'"/>
+                    <td th:text="${valuteService.findById(history.targetCurrency).charCode + ' (' + valuteService.findById(history.targetCurrency).name} + ')'"/>
+                    <td th:text="${history.sourceSumm}"/>
+                    <td th:text="${history.resultSumm}"/>
+                    <td th:text="${history.createdAt}"/>
+                </tr>
+                </tbody>
+            </table>
+            <button type="submit" class="btn btn-primary btn-block">Поиск</button>
+        </form>
+        <form th:action="@{/}" method="get">
+            <button type="submit" class="btn btn-primary btn-block">Конвертер</button>
+        </form>
+    </div>
+</body>
+</html>
