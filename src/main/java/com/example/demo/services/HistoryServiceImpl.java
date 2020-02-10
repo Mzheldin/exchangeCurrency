@@ -58,15 +58,15 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     public History exchangeUpdateHistory(History history) {
         int i = 1;
-        Rate sourceRate = rateService.findOneByValuteIdAndCreatedAt(history.getSourceCurrency(), Date.valueOf(LocalDate.now().minus(1, ChronoUnit.DAYS)));
-        Rate targetRate = rateService.findOneByValuteIdAndCreatedAt(history.getTargetCurrency(), Date.valueOf(LocalDate.now().minus(1, ChronoUnit.DAYS)));
+        Rate sourceRate = rateService.findOneByValuteIdAndCreatedAt(history.getSourceCurrency(), Date.valueOf(LocalDate.now()));
+        Rate targetRate = rateService.findOneByValuteIdAndCreatedAt(history.getTargetCurrency(), Date.valueOf(LocalDate.now()));
         while (sourceRate == null || targetRate == null){
             xmlParseBean.parseValCurs();
             sourceRate = rateService.findOneByValuteIdAndCreatedAt(history.getSourceCurrency(), Date.valueOf(LocalDate.now().minus(i, ChronoUnit.DAYS)));
             targetRate = rateService.findOneByValuteIdAndCreatedAt(history.getTargetCurrency(), Date.valueOf(LocalDate.now().minus(i, ChronoUnit.DAYS)));
             i++;
         }
-        BigDecimal sourceArgument = sourceRate.getValue().divide(new BigDecimal(sourceRate.getNominal()));
+        BigDecimal sourceArgument = sourceRate.getValue().divide(new BigDecimal(sourceRate.getNominal())).multiply(history.getSourceSumm());
         BigDecimal targetArgument = targetRate.getValue().divide(new BigDecimal(targetRate.getNominal()));
         history.setResultSumm(sourceArgument.divide(targetArgument, 4, RoundingMode.HALF_UP));
         return history;
