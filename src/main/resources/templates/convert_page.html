@@ -11,10 +11,10 @@
             <select th:name="firstVal" th:field="*{sourceCurrency}">
                 <option th:each="valuteFirst : ${valutes}" th:text="${valuteFirst.charCode} + ' (' + ${valuteFirst.name} + ')'" th:value="${valuteFirst.id}"/>
             </select>
+            <input th:field="*{sourceSumm}" type="number" placeholder="">
             <select th:name="secondVal" th:field="*{targetCurrency}">
                 <option th:each="valuteSecond : ${valutes}" th:text="${valuteSecond.charCode} + ' (' + ${valuteSecond.name} + ')'" th:value="${valuteSecond.id}"/>
             </select>
-            <input th:field="*{sourceSumm}" type="number" placeholder="">
             <input th:field="*{resultSumm}" type="number" placeholder="">
             <button type="submit" class="btn btn-primary btn-block">Конвертировать</button>
         </form>
