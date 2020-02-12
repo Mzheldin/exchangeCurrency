@@ -14,6 +14,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -64,8 +65,11 @@ public class MainController {
                               @RequestParam(name = "sourceValute", required = false) String sourceValute,
                               @RequestParam(name = "targetValute", required = false) String targetValute) {
         List<History> histories = new ArrayList<>();
-        if (date != null && sourceValute != null && targetValute != null)
+        try {
             histories = historyService.findAllByDateAndSourceAndTargetValutes(Date.valueOf(date), sourceValute, targetValute);
+        } catch (Exception e) {
+            histories = Collections.emptyList();
+        }
         model.addAttribute("valutes", valuteService.findAll());
         model.addAttribute("histories", histories);
         model.addAttribute("valuteService", valuteService);
